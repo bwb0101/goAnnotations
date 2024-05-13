@@ -1,3 +1,3 @@
-module github.com/Annotations
+module github.com/goAnnotations
 
 go 1.22

@@ -3,7 +3,7 @@ package util
 import (
 	"path"
 
-	"github.com/Annotations/generator"
+	"github.com/goAnnotations/generator"
 )
 
 func Prefixed(filenamePath string) string {

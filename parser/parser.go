@@ -16,7 +16,7 @@ import (
 	"regexp"
 	"sort"
 
-	"github.com/Annotations/model"
+	"github.com/goAnnotations/model"
 )
 
 type fileEntry struct {

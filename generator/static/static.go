@@ -13,9 +13,9 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/Annotations/generator"
-	"github.com/Annotations/generator/util"
-	"github.com/Annotations/model"
+	"github.com/goAnnotations/generator"
+	"github.com/goAnnotations/generator/util"
+	"github.com/goAnnotations/model"
 )
 
 type templateData struct {

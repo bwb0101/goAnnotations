@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Annotations/model"
+	"github.com/goAnnotations/model"
 )
 
 type astVisitor struct {
