@@ -13,10 +13,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/goAnnotations/generator"
-	"github.com/goAnnotations/generator/static"
-	"github.com/goAnnotations/model"
-	"github.com/goAnnotations/parser"
+	"github.com/bwb0101/goAnnotations/generator"
+	"github.com/bwb0101/goAnnotations/generator/static"
+	"github.com/bwb0101/goAnnotations/model"
+	"github.com/bwb0101/goAnnotations/parser"
 )
 
 const (

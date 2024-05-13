@@ -10,7 +10,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/goAnnotations/model"
+	"github.com/bwb0101/goAnnotations/model"
 )
 
 func GetPackageNameForStructs(structs []model.Struct) (string, error) {
