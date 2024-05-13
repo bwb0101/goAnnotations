@@ -16,7 +16,7 @@ import (
 	"regexp"
 	"sort"
 
-	"Annotations/model"
+	"github.com/Annotations/model"
 )
 
 type fileEntry struct {

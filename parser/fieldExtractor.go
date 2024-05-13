@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strings"
 
-	"Annotations/model"
+	"github.com/Annotations/model"
 )
 
 func extractFieldList(fieldList *ast.FieldList, imports map[string]string) []model.Field {

@@ -1,7 +1,7 @@
 package generator
 
 import (
-	"Annotations/model"
+	"github.com/Annotations/model"
 )
 
 const (
