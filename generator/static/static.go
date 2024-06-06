@@ -209,7 +209,7 @@ var customTemplateFuncs = template.FuncMap{
 var apiOrders = [][]string{
 	{"net", ""},
 	{"path", ""},
-	{"resp", "true"},
+	{"resp", "false"},
 	{"validation", "net_fw.Validation_type_none"},
 	{"bodyLimit", "0"},
 	{"api", ""},
