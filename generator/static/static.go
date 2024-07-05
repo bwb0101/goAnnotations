@@ -97,7 +97,7 @@ func parseHandlerApi(words []string, data *templateData, key, apiName string) {
 		data.Codes[key] = map[string]string{}
 		data.CodesList = append(data.CodesList, key)
 	}
-	data.Codes[key] = map[string]string{"api": apiName}
+	data.Codes[key] = map[string]string{"api": apiName, "api_method": apiName}
 	for _, ll := range words {
 		kv := strings.Split(ll, "=")
 		switch k := strings.TrimSpace(kv[0]); k {
@@ -192,7 +192,13 @@ func GetCodes(o templateData) string {
 		for _, order := range apiOrders {
 			c := mm[order[0]]
 			if c == "" {
-				c = order[1]
+				if len(order) > 1 {
+					if order[2] == "str" {
+						c = "\"" + order[1] + "\""
+					}
+				} else {
+					c = order[1]
+				}
 			}
 			str += c + ","
 		}
@@ -213,6 +219,7 @@ var apiOrders = [][]string{
 	{"validation", "net_fw.Validation_type_none"},
 	{"bodyLimit", "0"},
 	{"api", ""},
+	{"api_method", "", "str"},
 	{"valid.limit", "nil"},
 	{"valid.file", "nil"},
 }
