@@ -192,12 +192,12 @@ func GetCodes(o templateData) string {
 		for _, order := range apiOrders {
 			c := mm[order[0]]
 			if c == "" {
-				if len(order) > 1 {
+				c = order[1]
+			} else {
+				if len(order) > 2 {
 					if order[2] == "str" {
-						c = "\"" + order[1] + "\""
+						c = "\"" + c + "\""
 					}
-				} else {
-					c = order[1]
 				}
 			}
 			str += c + ","
