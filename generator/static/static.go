@@ -113,10 +113,6 @@ func parseHandlerApi(words []string, data *templateData, key, apiName string) {
 				v = "0"
 			}
 			data.Codes[key][k] = v
-		case "bodyLimitPkg":
-			if v := strings.TrimSpace(kv[1]); len(v) > 2 {
-				data.Imports[v] = strings.TrimSpace(kv[1])
-			}
 		case "resp":
 			if v := strings.TrimSpace(kv[1]); v == `"object"` {
 				data.Codes[key][k] = "true"
@@ -124,6 +120,13 @@ func parseHandlerApi(words []string, data *templateData, key, apiName string) {
 		case "validation":
 			if v := strings.TrimSpace(kv[1]); v == `"token"` {
 				data.Codes[key][k] = "net_fw.Validation_type_token"
+			}
+		case "dataPtrStruct":
+			if v := strings.TrimSpace(kv[1]); v != "" {
+				v = v[1 : len(v)-1] // 去掉两边引号
+				vv := strings.Split(v, "|")
+				data.Imports[fmt.Sprintf(`"%s"`, vv[0])] = fmt.Sprintf(`"%s"`, vv[0])
+				data.Codes[key][k] = fmt.Sprintf("func() any{ return &%s{}}", vv[1])
 			}
 		}
 	}
@@ -222,4 +225,5 @@ var apiOrders = [][]string{
 	{"api_method", "", "str"},
 	{"valid.limit", "nil"},
 	{"valid.file", "nil"},
+	{"dataPtrStruct", "nil"},
 }
