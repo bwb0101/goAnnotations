@@ -176,13 +176,10 @@ func parseHandlerApi(words []string, data *templateData, key, apiName string) {
 		case "msgId":
 			if v := strings.TrimSpace(kv[1]); v != "" {
 				v = v[1 : len(v)-1] // 去掉两边引号
-				vv := strings.Split(v, "|")
 				if net == `"tcp"` {
-					data.tcpImports[fmt.Sprintf(`"%s"`, vv[0])] = fmt.Sprintf(`"%s"`, vv[0])
-					data.tcpCodes[key][k] = vv[1]
+					data.tcpCodes[key][k] = v
 				} else if net == `"udp"` {
-					data.udpImports[fmt.Sprintf(`"%s"`, vv[0])] = fmt.Sprintf(`"%s"`, vv[0])
-					data.udpCodes[key][k] = vv[1]
+					data.udpCodes[key][k] = v
 				}
 			}
 		case "bodyLimit":
