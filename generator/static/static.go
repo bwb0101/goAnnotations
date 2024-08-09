@@ -196,7 +196,11 @@ func parseHandlerApi(words []string, data *templateData, key, apiName string) {
 			if v := strings.TrimSpace(kv[1]); v == `"token"` {
 				data.httpCodes[key][k] = "net_fw.Validation_type_token"
 			} else if v == `"user"` {
-				data.httpCodes[key][k] = "true"
+				if net == `"tcp"` {
+					data.tcpCodes[key][k] = "true"
+				} else if net == `"udp"` {
+					data.udpCodes[key][k] = "true"
+				}
 			}
 		case "dataPtrStruct":
 			if v := strings.TrimSpace(kv[1]); v != "" {
@@ -214,7 +218,16 @@ func parseHandlerApi(words []string, data *templateData, key, apiName string) {
 				}
 			}
 		case "bodyType":
-			data.httpCodes[key][k] = strings.TrimSpace(kv[1])
+			if v := strings.TrimSpace(kv[1]); v != "" {
+				v = v[1 : len(v)-1] // 去掉两边引号
+				if net == `"http"` {
+					data.httpCodes[key][k] = v
+				} else if net == `"tcp"` {
+					data.tcpCodes[key][k] = v
+				} else if net == `"udp"` {
+					data.udpCodes[key][k] = v
+				}
+			}
 		}
 	}
 }
@@ -318,7 +331,7 @@ func GetCodesTcp(o templateData) string {
 	for _, cl := range o.tcpCodesList {
 		mm := o.tcpCodes[cl]
 		str := "net_fw.NewTcpNetHandler("
-		for _, order := range httpApiOrders {
+		for _, order := range tcpUdpApiOrders {
 			c := mm[order[0]]
 			if c == "" {
 				c = order[1]
@@ -341,7 +354,7 @@ func GetCodesUdp(o templateData) string {
 	for _, cl := range o.udpCodesList {
 		mm := o.udpCodes[cl]
 		str := "net_fw.NewKcpNetHandler("
-		for _, order := range httpApiOrders {
+		for _, order := range tcpUdpApiOrders {
 			c := mm[order[0]]
 			if c == "" {
 				c = order[1]
@@ -395,4 +408,5 @@ var tcpUdpApiOrders = [][]string{
 	{"api_method", "", "str"},
 	{"dataPtrStruct", "nil"},
 	{"validation", "false"},
+	{"bodyType", "0"},
 }
