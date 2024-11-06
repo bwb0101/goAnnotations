@@ -1,4 +1,4 @@
-package static
+package api
 
 const httpHandlersTemplate = `// 由注解自动生成: 不要手动编辑
 /*

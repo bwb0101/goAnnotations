@@ -5,7 +5,7 @@
  * 作者：Ben
  */
 
-package static
+package api
 
 import (
 	"fmt"
@@ -35,11 +35,15 @@ type templateData struct {
 	udpCodesList []string
 }
 
-type Generator struct {
+type GeneratorApi struct {
 	targetFilename string
 }
 
-func (eg *Generator) Generate(inputDir string, parsedSources model.ParsedSources) error {
+func NewGeneratorApi() generator.Generator {
+	return &GeneratorApi{}
+}
+
+func (eg *GeneratorApi) Generate(inputDir string, parsedSources model.ParsedSources) error {
 	pkgName := ""
 	var datas = map[string]*templateData{}
 	var data *templateData
@@ -70,10 +74,6 @@ func (eg *Generator) Generate(inputDir string, parsedSources model.ParsedSources
 	return nil
 }
 
-func NewGenerator() generator.Generator {
-	return &Generator{}
-}
-
 func generate_http(datas map[string]*templateData, dir string) error {
 	for _, data := range datas {
 		if len(data.httpCodes) > 0 {
@@ -81,7 +81,7 @@ func generate_http(datas map[string]*templateData, dir string) error {
 				Data:           *data,
 				Src:            data.PackageName,
 				TargetFilename: filepath.Join(dir, generator.GenfilePrefix+"http_api_handler.go"),
-				TemplateName:   "static_http",
+				TemplateName:   "api_http",
 				TemplateString: httpHandlersTemplate,
 				FuncMap:        customHttpTemplateFuncs,
 			}); err != nil {
@@ -99,7 +99,7 @@ func generate_tcp(datas map[string]*templateData, dir string) error {
 				Data:           *data,
 				Src:            data.PackageName,
 				TargetFilename: filepath.Join(dir, generator.GenfilePrefix+"tcp_api_handler.go"),
-				TemplateName:   "static_tcp",
+				TemplateName:   "api_tcp",
 				TemplateString: tcpHandlersTemplate,
 				FuncMap:        customTcpTemplateFuncs,
 			}); err != nil {
@@ -117,7 +117,7 @@ func generate_udp(datas map[string]*templateData, dir string) error {
 				Data:           *data,
 				Src:            data.PackageName,
 				TargetFilename: filepath.Join(dir, generator.GenfilePrefix+"udp_api_handler.go"),
-				TemplateName:   "static_udp",
+				TemplateName:   "api_udp",
 				TemplateString: udpHandlersTemplate,
 				FuncMap:        customUdpTemplateFuncs,
 			}); err != nil {

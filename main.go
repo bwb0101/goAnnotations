@@ -14,7 +14,8 @@ import (
 	"os"
 
 	"github.com/bwb0101/goAnnotations/generator"
-	"github.com/bwb0101/goAnnotations/generator/static"
+	"github.com/bwb0101/goAnnotations/generator/api"
+	codeModel "github.com/bwb0101/goAnnotations/generator/model"
 	"github.com/bwb0101/goAnnotations/model"
 	"github.com/bwb0101/goAnnotations/parser"
 )
@@ -25,12 +26,14 @@ const (
 
 var (
 	dir         *string
+	mode        *string
 	static_func *bool
 )
 
 func main() {
 	processArgs()
-	// *dir = "E:\\Work\\go_project\\gibo\\platform_svr\\api"
+	// s := "D:\\Works\\golang\\nv1_new\\model\\model_user"
+	// dir = &s
 	pkgs, _ := parser.ParseSourceDir(*dir, "^.*.go$", excludeMatchPattern)
 	// b, _ := json.MarshalIndent(pkgs, "", "\t")
 	// fmt.Println(string(b))
@@ -39,7 +42,8 @@ func main() {
 
 func runAllGenerators(inputDir string, parsedSources model.ParsedSources) {
 	for name, g := range map[string]generator.Generator{
-		"static": static.NewGenerator(),
+		"api":   api.NewGeneratorApi(),
+		"model": codeModel.NewGeneratorModel(),
 	} {
 		err := g.Generate(inputDir, parsedSources)
 		if err != nil {
@@ -51,6 +55,7 @@ func runAllGenerators(inputDir string, parsedSources model.ParsedSources) {
 
 func processArgs() {
 	dir = flag.String("dir", "", "要检查的目录")
+	mode = flag.String("model", "", "检查模式")
 	static_func = flag.Bool("static_func", false, "检查非struct的方法")
 
 	flag.Parse()
