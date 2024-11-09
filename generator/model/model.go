@@ -63,12 +63,13 @@ func (eg *GeneratorModel) Generate(inputDir string, parsedSources model.ParsedSo
 			columns_sb.WriteString(fmt.Sprintf("%s: col_%s{\n", st.Name, st.Name))
 			columns_sb.WriteString(fmt.Sprintf("TableName: \"%s\",\n", st.Name))
 			for i := 1; i < len(st.Fields); i++ {
-				field := st.Fields[i]
-				col_tb_sb.WriteString(fmt.Sprintf("%s storage.ColumnTblField\n", field.Name))
-				if strings.Contains(field.Tag, "pk:") {
-					columns_sb.WriteString(fmt.Sprintf("tb_key: tb_key{\"tb\", \"%s\"},\n", field.Name))
-				} else {
-					columns_sb.WriteString(fmt.Sprintf("%s: \"%s\",\n", field.Name, field.Name))
+				if field := st.Fields[i]; !strings.Contains(field.Tag, "-") {
+					col_tb_sb.WriteString(fmt.Sprintf("%s storage.ColumnTblField\n", field.Name))
+					if strings.Contains(field.Tag, "pk:") {
+						columns_sb.WriteString(fmt.Sprintf("tb_key: tb_key{\"tb\", \"%s\"},\n", field.Name))
+					} else {
+						columns_sb.WriteString(fmt.Sprintf("%s: \"%s\",\n", field.Name, field.Name))
+					}
 				}
 			}
 			col_tb_sb.WriteString("}\n")
