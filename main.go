@@ -31,9 +31,9 @@ var (
 )
 
 func main() {
-	processArgs()
-	// s := "D:\\Works\\golang\\nv1_new\\model\\model_user"
-	// dir = &s
+	// processArgs()
+	s := "D:\\Works\\golang\\nv1_new\\model\\model_user"
+	dir = &s
 	pkgs, _ := parser.ParseSourceDir(*dir, "^.*.go$", excludeMatchPattern)
 	// b, _ := json.MarshalIndent(pkgs, "", "\t")
 	// fmt.Println(string(b))
