@@ -78,6 +78,9 @@ func processExpression(expr ast.Expr, imports map[string]string) *Expression {
 	if mExpr := processIndexListType(expr, imports); mExpr != nil {
 		return mExpr
 	}
+	if mExpr := processIndexType(expr, imports); mExpr != nil {
+		return mExpr
+	}
 	if mExpr := processFuncType(expr, imports); mExpr != nil {
 		return mExpr
 	}
@@ -178,6 +181,15 @@ func processStructType(fieldType ast.Expr, _ map[string]string) *Expression {
 
 func processIndexListType(fieldType ast.Expr, _ map[string]string) *Expression {
 	if _, ok := fieldType.(*ast.IndexListExpr); ok {
+		return &Expression{
+			TypeName: "struct{}",
+		}
+	}
+	return nil
+}
+
+func processIndexType(fieldType ast.Expr, _ map[string]string) *Expression {
+	if _, ok := fieldType.(*ast.IndexExpr); ok {
 		return &Expression{
 			TypeName: "struct{}",
 		}

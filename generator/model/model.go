@@ -28,6 +28,10 @@ func NewGeneratorModel() generator.Generator {
 }
 
 func (eg *GeneratorModel) Generate(inputDir string, parsedSources model.ParsedSources) (err error) {
+	pkgName := "model_user"
+	if parsedSources.PkgName != "" {
+		pkgName = parsedSources.PkgName
+	}
 	var pkgOnce sync.Once
 	var sb strings.Builder
 	var col_tb_sb strings.Builder
@@ -46,7 +50,7 @@ func (eg *GeneratorModel) Generate(inputDir string, parsedSources model.ParsedSo
 	for _, st := range parsedSources.Structs {
 		if st.Fields[0].Name == "T" {
 			pkgOnce.Do(func() {
-				sb.WriteString("package model_user\n")
+				sb.WriteString(fmt.Sprintf("package %s\n", pkgName))
 				sb.WriteString("import (\n")
 				sb.WriteString("\"common/framework\"\n")
 				sb.WriteString("\"common/framework/storage\"\n")

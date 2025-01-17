@@ -9,6 +9,7 @@ type ParsedSources struct {
 	Interfaces []Interface `json:"interfaces,omitempty"`
 	Typedefs   []Typedef   `json:"typedefs,omitempty"`
 	Enums      []Enum      `json:"enums,omitempty"`
+	PkgName    string      `json:"-"`
 }
 
 // @JsonStruct()

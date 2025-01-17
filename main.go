@@ -27,6 +27,7 @@ const (
 var (
 	dir         *string
 	mode        *string
+	pkgName     *string
 	static_func *bool
 )
 
@@ -41,6 +42,7 @@ func main() {
 }
 
 func runAllGenerators(inputDir string, parsedSources model.ParsedSources) {
+	parsedSources.PkgName = *pkgName
 	for name, g := range map[string]generator.Generator{
 		"api":   api.NewGeneratorApi(),
 		"model": codeModel.NewGeneratorModel(),
@@ -56,6 +58,7 @@ func runAllGenerators(inputDir string, parsedSources model.ParsedSources) {
 func processArgs() {
 	dir = flag.String("dir", "", "要检查的目录")
 	mode = flag.String("model", "", "检查模式")
+	pkgName = flag.String("pkg", "", "包名")
 	static_func = flag.Bool("static_func", false, "检查非struct的方法")
 
 	flag.Parse()
