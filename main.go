@@ -33,6 +33,8 @@ var (
 
 func main() {
 	processArgs()
+	// p := "test"
+	// pkgName = &p
 	// s := "D:\\Works\\github\\goAnnotations\\test"
 	// dir = &s
 	pkgs, _ := parser.ParseSourceDir(*dir, "^.*.go$", excludeMatchPattern)

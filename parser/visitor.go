@@ -65,10 +65,12 @@ func (v *astVisitor) extractGenDeclImports(node ast.Node) {
 }
 
 func (v *astVisitor) parseAsStruct(node ast.Node) {
-	if mStruct := extractGenDeclForStruct(node, v.Imports); mStruct != nil {
-		mStruct.PackageName = v.PackageName
-		mStruct.Filename = v.CurrentFilename
-		v.Structs = append(v.Structs, *mStruct)
+	if mStructs := extractGenDeclForStruct(node, v.Imports); mStructs != nil {
+		for _, mStruct := range mStructs {
+			mStruct.PackageName = v.PackageName
+			mStruct.Filename = v.CurrentFilename
+			v.Structs = append(v.Structs, *mStruct)
+		}
 	}
 }
 
@@ -118,30 +120,32 @@ func extractPackageName(node ast.Node) (string, bool) {
 
 // ------------------------------------------------------ STRUCT -------------------------------------------------------
 
-func extractGenDeclForStruct(node ast.Node, imports map[string]string) *model.Struct {
+func extractGenDeclForStruct(node ast.Node, imports map[string]string) []*model.Struct {
 	if genDecl, ok := node.(*ast.GenDecl); ok {
 		// Continue parsing to see if it is a struct
-		if mStruct := extractSpecsForStruct(genDecl.Specs, imports); mStruct != nil {
+		if mStructs := extractSpecsForStruct(genDecl.Specs, imports); mStructs != nil {
 			// Docline of struct (that could contain annotations) appear far before the details of the struct
-			mStruct.DocLines = extractComments(genDecl.Doc)
-			return mStruct
+			for _, mStruct := range mStructs {
+				mStruct.DocLines = extractComments(genDecl.Doc)
+			}
+			return mStructs
 		}
 	}
 	return nil
 }
 
-func extractSpecsForStruct(specs []ast.Spec, imports map[string]string) *model.Struct {
-	if len(specs) >= 1 {
-		if typeSpec, ok := specs[0].(*ast.TypeSpec); ok {
+func extractSpecsForStruct(specs []ast.Spec, imports map[string]string) (mStructs []*model.Struct) {
+	for _, spec := range specs {
+		if typeSpec, ok := spec.(*ast.TypeSpec); ok {
 			if structType, ok := typeSpec.Type.(*ast.StructType); ok {
-				return &model.Struct{
+				mStructs = append(mStructs, &model.Struct{
 					Name:   typeSpec.Name.Name,
 					Fields: extractFieldList(structType.Fields, imports),
-				}
+				})
 			}
 		}
 	}
-	return nil
+	return
 }
 
 // ------------------------------------------------------ TYPEDEF ------------------------------------------------------

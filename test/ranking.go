@@ -9,7 +9,12 @@ package test
 
 type (
 	Ranking struct {
-		Id      int32 `pk:""`
-		Ranking *Maps[int32, int32]
+		T  string
+		Id int32 `pk:""`
+		_h int32
+	}
+	Ranking2 struct {
+		T string
+		N string
 	}
 )
