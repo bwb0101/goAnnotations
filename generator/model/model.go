@@ -45,15 +45,15 @@ func (eg *GeneratorModel) Generate(inputDir string, parsedSources model.ParsedSo
 	columns_sb.WriteString("var Columns = colStruct{\n")
 	dao_sb.WriteString("var DAO = struct {\n")
 	init_sb.WriteString("func init() {\n")
-	init_sb.WriteString("framework.Framework.Store.SetColumnTblStruct(map[storage.ColumnTblName]func() storage.StorageModel{\n")
+	init_sb.WriteString("framework_lib.Framework.Store.SetColumnTblStruct(map[storage.ColumnTblName]func() storage.StorageModel{\n")
 	//
 	for _, st := range parsedSources.Structs {
-		if st.Fields[0].Name == "T" {
+		if len(st.Fields) > 0 && st.Fields[0].Name == "T" {
 			pkgOnce.Do(func() {
 				sb.WriteString(fmt.Sprintf("package %s\n", pkgName))
 				sb.WriteString("import (\n")
-				sb.WriteString("\"common/framework\"\n")
-				sb.WriteString("\"common/framework/storage\"\n")
+				sb.WriteString("\"common/framework_lib\"\n")
+				sb.WriteString("\"common/framework_lib/storage\"\n")
 				sb.WriteString(")\n")
 				sb.WriteString("type tb_key struct {\n")
 				sb.WriteString("TKey string\n")
